@@ -1,4 +1,36 @@
-.DS_Store
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore virtual environment directories
+venv/
+env/
+.venv/
+ENV/
+
+# Ignore Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore TensorFlow model checkpoints
 checkpoints/
 
+# Ignore log files
+*.log
+
+# Ignore data files that don't need to be tracked
 datasets/
+*.csv
+*.tsv
+*.json
+
+# Ignore system files (macOS, Windows, etc.)
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/editor files (VS Code, PyCharm, etc.)
+.vscode/
+.idea/
+*.swp
+*.swo
+
