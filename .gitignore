@@ -19,7 +19,7 @@ checkpoints/
 *.log
 
 # Ignore data files that don't need to be tracked
-dataset/
+datasets/
 *.csv
 *.tsv
 *.json
