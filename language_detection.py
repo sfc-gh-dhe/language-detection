@@ -31,9 +31,8 @@ def vectorize_data(vectorize_layer, X_train, X_validation, X_test):
     print(f"Training data shape {X_train.shape}, Validation data shape {X_validation.shape}, Test data shape {X_test.shape}, vocabulary size: {vocab_size}")
     return X_train, X_validation, X_test, vocab_size
 
-def encode_label(y_train, y_validation, y_test):
+def encode_label(encoder, y_train, y_validation, y_test):
     # Convert y labels to one-hot encoder
-    encoder = OneHotEncoder(sparse_output=False)
     y_train = encoder.fit_transform(np.array(y_train))
     y_validation = encoder.fit_transform(np.array(y_validation))
     y_test = encoder.fit_transform(np.array(y_test))
@@ -59,9 +58,12 @@ if __name__ == "__main__":
     # Convert the data to vectors
     vectorize_layer = tf.keras.layers.TextVectorization(output_mode='int', split='character', output_sequence_length=2500, ngrams=3)
     vectorize_layer.adapt(X_train)
-
     X_train, X_validation, X_test, vocab_size = vectorize_data(vectorize_layer, X_train, X_validation, X_test)
-    y_train, y_validation, y_test = encode_label(y_train, y_validation, y_test)
+
+    # Convert the label to one-hot vectors
+    encoder = OneHotEncoder(sparse_output=False)
+    y_train, y_validation, y_test = encode_label(encoder, y_train, y_validation, y_test)
+    print(y_validation)
 
     model =  FastTextModel(embedding_dim=128, num_lang=7, vocab_size=vocab_size, check_point_path=create_checkpoint_path())
 
@@ -76,4 +78,4 @@ if __name__ == "__main__":
 
     if args.predict is not None:
         test_input = vectorize_layer(pd.DataFrame([args.predict]))
-        model.predict(test_input)
+        model.predict(test_input, encoder)

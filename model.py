@@ -72,11 +72,16 @@ class FastTextModel():
         plt.legend()
         plt.show()
 
-    def predict(self, X_test):
+    def predict(self, X_test, encoder):
         if os.path.exists(self.check_point_path):
             self.model.build(X_test.shape)
             self.model.load_weights(self.check_point_path)
-        print(self.model.predict(X_test))
+        y = self.model.predict(X_test)
+
+        # Inverse transform to get the original class
+        decoded_class = encoder.inverse_transform(y)
+        print(f"Language of the text is {decoded_class}")
+        
     
     def evaluate(self, X_test, y_test, batch_size=128):
         if os.path.exists(self.check_point_path):
